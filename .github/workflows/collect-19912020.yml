@@ -1,12 +1,6 @@
 name: Collect TerraClimate 1991–2020 pilot
 on:
-  push:
-    branches: [main]
-    paths:
-      - .github/workflows/collect-19912020.yml
   workflow_dispatch:
-  schedule:
-    - cron: '17 8 * * *'  # Bounded pilot: one tile/day until three in config/plan.json are complete
 permissions:
   contents: write
 concurrency:
