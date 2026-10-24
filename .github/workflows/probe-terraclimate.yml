@@ -1,0 +1,21 @@
+name: Probe TerraClimate 1991-2020
+on:
+  push:
+    branches: [main]
+    paths:
+      - scripts/probe_terraclimate.py
+      - .github/workflows/probe-terraclimate.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install 'netCDF4>=1.7,<2'
+      - run: python scripts/probe_terraclimate.py
