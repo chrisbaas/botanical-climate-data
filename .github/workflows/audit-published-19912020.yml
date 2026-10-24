@@ -1,0 +1,20 @@
+name: Audit published 1991–2020 climate profile
+on:
+  push:
+    branches: [main]
+    paths:
+      - scripts/audit_published_19912020.py
+      - .github/workflows/audit-published-19912020.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/audit_published_19912020.py
