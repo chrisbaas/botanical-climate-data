@@ -1,0 +1,27 @@
+{
+  "url": "https://thredds.northwestknowledge.net/thredds/dodsC/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_tmin.nc.ascii?tmin[0:1:11][978:1:979][1362:1:1363]",
+  "status": 200,
+  "bytes": 947,
+  "duration_seconds": 3.318354211,
+  "shape": [
+    12,
+    2,
+    2
+  ],
+  "raw_first_values": [
+    750,
+    748,
+    -32768,
+    749
+  ],
+  "scale_factor": 0.1,
+  "add_offset": -73,
+  "fill_value": -32768,
+  "decoded_first_values_c": [
+    2.0,
+    1.8,
+    null,
+    1.9
+  ],
+  "scope": "diagnostic only; not used as collection adapter"
+}

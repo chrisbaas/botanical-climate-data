@@ -23,6 +23,8 @@ def provenance(source):
             "generation":"legacy_climatology_generation_not_verified",
             "reference_et":"TerraClimate PET/RET, not demonstrated equivalent to C3d FAO ET0"}
 def process(spec,source,out):
+    if any(abs(spec["bbox"][i+2]-spec["bbox"][i])>5 for i in (0,1)):
+        raise ValueError("Pilot tiles must not exceed 5 degrees per side")
     out=Path(out);all_cells=list(cells_for_bbox(*spec["bbox"]))
     land=[c for c in all_cells if source.land_covers(c.lon,c.lat)]
     profiles=source.sample(land) if land else {}
@@ -71,6 +73,7 @@ def verify(out):
             raise ValueError("Tile contract/provenance mismatch")
     return len(m["tiles"])
 def run(plan_path,out,source,max_tiles=1):
+    if not 1 <= max_tiles <= 3: raise ValueError("Pilot limit is 1 to 3 tiles")
     out=Path(out);out.mkdir(parents=True,exist_ok=True)
     plan=json.loads(Path(plan_path).read_text())["tiles"]
     mpath=out/"manifest.json"
@@ -79,6 +82,7 @@ def run(plan_path,out,source,max_tiles=1):
     for item in m["tiles"].values():
         if item["source"]!=provenance(source):
             raise ValueError("Source drift: create a new version, never mix")
+    if mpath.exists(): verify(out)
     count=0
     for tile in plan:
         if tile["id"] in m["tiles"]:continue

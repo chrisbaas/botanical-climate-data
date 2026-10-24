@@ -1,0 +1,161 @@
+{
+  "baseline": "1991-2020",
+  "generation": "not established by file metadata; do not mix with v1.1",
+  "access_method": "HTTPS THREDDS fileServer; cached global monthly climatologies; regional reads only",
+  "licence": "CC0 (TerraClimate distribution catalogue); Natural Earth public domain",
+  "files": {
+    "tmin": {
+      "url": "https://thredds.northwestknowledge.net/thredds/fileServer/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_tmin.nc",
+      "file": "TerraClimate_19912020_tmin.nc",
+      "sha256": "93961a5e423c02282bc1aea2761dbdd28bb8ec1ee79ca571f4b8b1db29d42a7a",
+      "bytes": 90006599,
+      "dimensions": [
+        "time",
+        "lat",
+        "lon"
+      ],
+      "shape": [
+        12,
+        4320,
+        8640
+      ],
+      "units": "deg C",
+      "scale_factor": 0.1,
+      "add_offset": -73.0,
+      "time_values": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "global_attributes": {
+        "method": "These monthly climatologies were computed from TerraClimate v1.1 using years 1991-2020. In TerraClimate, water balance variables, actual evapotranspiration, climatic water deficit, runoff, soil moisture, and snow water equivalent were calculated using a water balance model and plant extractable soil water capacity derived from Wang-Erlandsson et al (2016)."
+      }
+    },
+    "tmax": {
+      "url": "https://thredds.northwestknowledge.net/thredds/fileServer/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_tmax.nc",
+      "file": "TerraClimate_19912020_tmax.nc",
+      "sha256": "04e1293284826d5c9814336a52c389d8552523dbe3ccd3aca072e6ca17ac6f58",
+      "bytes": 93881890,
+      "dimensions": [
+        "time",
+        "lat",
+        "lon"
+      ],
+      "shape": [
+        12,
+        4320,
+        8640
+      ],
+      "units": "deg C",
+      "scale_factor": 0.1,
+      "add_offset": -73.0,
+      "time_values": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "global_attributes": {
+        "method": "These monthly climatologies were computed from TerraClimate v1.1 using years 1991-2020. In TerraClimate, water balance variables, actual evapotranspiration, climatic water deficit, runoff, soil moisture, and snow water equivalent were calculated using a water balance model and plant extractable soil water capacity derived from Wang-Erlandsson et al (2016)."
+      }
+    },
+    "ppt": {
+      "url": "https://thredds.northwestknowledge.net/thredds/fileServer/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_ppt.nc",
+      "file": "TerraClimate_19912020_ppt.nc",
+      "sha256": "eae7eaa3f27c17376178af7a51e6cc5918287d99df35dc00e93ef274b174f211",
+      "bytes": 147673585,
+      "dimensions": [
+        "time",
+        "lat",
+        "lon"
+      ],
+      "shape": [
+        12,
+        4320,
+        8640
+      ],
+      "units": "mm",
+      "scale_factor": 0.1,
+      "add_offset": 0.0,
+      "time_values": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "global_attributes": {
+        "method": "These monthly climatologies were computed from TerraClimate v1.1 using years 1991-2020. In TerraClimate, water balance variables, actual evapotranspiration, climatic water deficit, runoff, soil moisture, and snow water equivalent were calculated using a water balance model and plant extractable soil water capacity derived from Wang-Erlandsson et al (2016)."
+      }
+    },
+    "pet": {
+      "url": "https://thredds.northwestknowledge.net/thredds/fileServer/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_pet.nc",
+      "file": "TerraClimate_19912020_pet.nc",
+      "sha256": "9db4b1dde786731be0f40f359115518099d5f0dcb464a205132a51ca290b694a",
+      "bytes": 119571852,
+      "dimensions": [
+        "time",
+        "lat",
+        "lon"
+      ],
+      "shape": [
+        12,
+        4320,
+        8640
+      ],
+      "units": "mm",
+      "scale_factor": 0.1,
+      "add_offset": 0.0,
+      "time_values": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "global_attributes": {
+        "method": "These monthly climatologies were computed from TerraClimate v1.1 using years 1991-2020. In TerraClimate, water balance variables, actual evapotranspiration, climatic water deficit, runoff, soil moisture, and snow water equivalent were calculated using a water balance model and plant extractable soil water capacity derived from Wang-Erlandsson et al (2016)."
+      }
+    }
+  },
+  "licence_sources": [
+    "https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE",
+    "https://www.naturalearthdata.com/about/terms-of-use/"
+  ],
+  "landmask": {
+    "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_land.geojson",
+    "sha256": "9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9",
+    "licence": "public domain"
+  }
+}

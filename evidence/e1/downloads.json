@@ -1,0 +1,32 @@
+[
+  {
+    "url": "https://thredds.northwestknowledge.net/thredds/fileServer/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_tmin.nc",
+    "bytes": 90006599,
+    "cache_hit": false,
+    "seconds": 6.128
+  },
+  {
+    "url": "https://thredds.northwestknowledge.net/thredds/fileServer/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_tmax.nc",
+    "bytes": 93881890,
+    "cache_hit": false,
+    "seconds": 7.665
+  },
+  {
+    "url": "https://thredds.northwestknowledge.net/thredds/fileServer/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_ppt.nc",
+    "bytes": 147673585,
+    "cache_hit": false,
+    "seconds": 7.014
+  },
+  {
+    "url": "https://thredds.northwestknowledge.net/thredds/fileServer/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_pet.nc",
+    "bytes": 119571852,
+    "cache_hit": false,
+    "seconds": 7.178
+  },
+  {
+    "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_land.geojson",
+    "bytes": 138160,
+    "cache_hit": false,
+    "seconds": 3.209
+  }
+]
