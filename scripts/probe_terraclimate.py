@@ -1,32 +1,24 @@
-"""Bounded (<=8 MB) public TerraClimate 1991-2020 NCSS connectivity/provenance probe.
-
-This does not publish or classify anything. Errors are explicit.
-"""
-import tempfile
-from pathlib import Path
-from urllib.parse import urlencode
+"""Bounded TerraClimate 1991-2020 and current data access diagnostics."""
 from urllib.request import Request, urlopen
+from urllib.parse import urlencode
+from urllib.error import HTTPError, URLError
 
-from netCDF4 import Dataset
-
-HOST="https://thredds.northwestknowledge.net"
-PATH="/thredds/ncss/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_tmin.nc"
-params={"var":"tmin","west":"-123.5","east":"-123.0","south":"49.0",
-        "north":"49.5","accept":"netcdf","addLatLon":"true"}
-url=HOST+PATH+"?"+urlencode(params)
-print("Request",url,flush=True)
-with urlopen(Request(url,headers={"User-Agent":"botanical-climate-data/0.2 climate science test"}),timeout=75) as stream:
-    print("HTTP",stream.status,"type",stream.headers.get("Content-Type"),flush=True)
-    data=stream.read(8_000_001)
-if len(data)>8_000_000:raise SystemExit("Safety cap >8 MB")
-print("Response bytes",len(data),flush=True)
-with tempfile.TemporaryDirectory() as folder:
-    path=Path(folder)/"probe.nc";path.write_bytes(data)
-    with Dataset(path) as ds:
-        print("Dimensions",[(k,len(v)) for k,v in ds.dimensions.items()],flush=True)
-        print("Variables",[(k,str(v.shape),getattr(v,'units','')) for k,v in ds.variables.items()],flush=True)
-        if 'tmin' not in ds.variables:raise ValueError("Expected tmin missing")
-        values=ds.variables['tmin'][:]
-        print("Range",float(values.min()),float(values.max()),"masks",sum(values.mask.flat) if hasattr(values,'mask') and hasattr(values.mask,'flat') else 'scalar',flush=True)
-        if values.size < 12:raise ValueError("Missing 12 monthly samples")
-print("1991-2020 NCSS probe passed",flush=True)
+host="https://thredds.northwestknowledge.net"
+bbox=dict(var="tmin",west="-123.5",east="-123.0",south="49.0",north="49.5",accept="netcdf",addLatLon="true")
+urls=[
+ ("normal ncss",f"{host}/thredds/ncss/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_tmin.nc?"+urlencode(bbox),"GET"),
+ ("normal dods metadata",f"{host}/thredds/dodsC/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_tmin.nc.dds","GET"),
+ ("normal fileserver",f"{host}/thredds/fileServer/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_tmin.nc","HEAD"),
+ ("current aggregate ncss",f"{host}/thredds/ncss/agg_terraclimate_tmin_1950_CurrentYear_GLOBE.nc?"+urlencode({**bbox,"time_start":"2020-01-01T00:00:00Z","time_end":"2020-12-31T00:00:00Z"}),"GET"),
+ ("2020 ncss",f"{host}/thredds/ncss/TERRACLIMATE_ALL/data/TerraClimate_tmin_2020.nc?"+urlencode(bbox),"GET"),
+ ("2020 fileserver",f"{host}/thredds/fileServer/TERRACLIMATE_ALL/data/TerraClimate_tmin_2020.nc","HEAD")
+]
+for label,url,method in urls:
+ print("Checking",label,url,flush=True)
+ try:
+  req=Request(url,method=method,headers={"User-Agent":"BCM-public-collector/0.2"})
+  with urlopen(req,timeout=16) as resp:
+   b=resp.read(1024) if method=="GET" else b''
+   print("HTTP",resp.status,"content-type",resp.headers.get("Content-Type"),"content-length",resp.headers.get("Content-Length"),"sample-bytes",len(b),"magic",b[:24].hex(),flush=True)
+ except Exception as exc:
+  print("ERROR",type(exc).__name__,str(exc)[:250],flush=True)
