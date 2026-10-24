@@ -32,3 +32,6 @@ Sources: [WorldClim](https://www.worldclim.org/data/worldclim21.html) · [Natura
 ## 1991–2020 monthly climate profiles (v0.2)
 
 A separate, strictly labelled 1991–2020 TerraClimate collector uses full NetCDF monthly climatology files (tmin, tmax, ppt, pet). Run with `bcm-climate-19912020 run --max-tiles 1` after installing `.[terra,test]`; verify using `bcm-climate-19912020 verify`. Results go to `published-19912020/` and never overwrite the older WorldClim pilot in `published/`. These are still not exact daily C3d botanical inputs. See `docs/19912020-contract.md`.
+
+### Current v0.2 pilot operations (2026-10-24)
+The independent TerraClimate 1991–2020 collector has a **daily scheduled GitHub Actions run** (08:17 UTC), limited to the three tiles in `config/plan.json`. It has published BC and Portugal. After the third tile completes it makes no new source requests. The original WorldClim 1970–2000 worker is still manual-only. No private botanical analysis is scheduled or run. The private repository's GitHub-hosted import test fails before obtaining a runner, and is not yet verified in a live runner. These distinctions are deliberate and should not be conflated.
