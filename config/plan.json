@@ -1,0 +1,8 @@
+{
+  "description": "Bounded bootstrap tiles only; no global activation without review",
+  "tiles": [
+    {"id":"bc-coast-01","bbox":[-125,45,-120,50]},
+    {"id":"portugal-01","bbox":[-10,35,-5,40]},
+    {"id":"central-andes-01","bbox":[-80,0,-75,5]}
+  ]
+}

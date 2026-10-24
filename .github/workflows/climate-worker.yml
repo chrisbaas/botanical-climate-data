@@ -1,0 +1,41 @@
+name: Climate data worker
+on:
+  workflow_dispatch:
+  # Following the first successful manual test, uncomment schedule to enable unattended work.
+  # schedule:
+  #   - cron: "23 6 * * *"
+permissions:
+  contents: write
+concurrency:
+  group: climate-data-publish
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v4
+        with:
+          path: .climate-cache
+          key: worldclim21-10m-v1
+      - run: python -m pip install -e ".[test]"
+      - run: pytest -q
+      - name: Acquire one bounded tile
+        run: bcm-climate run --max-tiles 1
+      - name: Verify the published manifest
+        run: bcm-climate verify
+      - name: Commit only verified output; never publish cached source zips
+        run: |
+          git config user.name "climate-data-bot"
+          git config user.email "climate-data-bot@users.noreply.github.com"
+          git add published/manifest.json published/tiles/
+          if ! git diff --cached --quiet; then
+            git commit -m "data: add verified climate tile"
+            git push
+          fi
