@@ -5,7 +5,8 @@ on:
     paths:
       - .github/workflows/collect-19912020.yml
   workflow_dispatch:
-  # A daily schedule will be activated only after live acquisition and ingestion checks.
+  schedule:
+    - cron: '17 8 * * *'  # Bounded pilot: one tile/day until three in config/plan.json are complete
 permissions:
   contents: write
 concurrency:
