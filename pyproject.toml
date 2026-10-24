@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=70", "wheel"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "botanical-climate-data"
+version = "0.1.0"
+description = "Botanically agnostic, versioned public climate data preparation"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26,<3", "rasterio>=1.4,<2", "shapely>=2,<3"]
+[project.optional-dependencies]
+test = ["pytest>=8,<10"]
+terra = ["netCDF4>=1.7,<2"]
+[project.scripts]
+bcm-climate = "bcm_climate.cli:main"
+bcm-climate-19912020 = "bcm_climate.cli_19912020:main"
+[tool.setuptools.packages.find]
+where = ["src"]

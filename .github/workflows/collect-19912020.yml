@@ -1,0 +1,39 @@
+name: Collect TerraClimate 1991–2020 pilot
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/collect-19912020.yml
+  workflow_dispatch:
+  # A daily schedule will be activated only after live acquisition and ingestion checks.
+permissions:
+  contents: write
+concurrency:
+  group: climate-19912020-publish
+  cancel-in-progress: false
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v4
+        with:
+          path: .terraclimate-cache
+          key: terraclimate-19912020-climatology-v02
+      - run: python -m pip install -e ".[terra,test]"
+      - run: pytest -q
+      - run: bcm-climate-19912020 run --max-tiles 1
+      - run: bcm-climate-19912020 verify
+      - name: Publish verified data only
+        run: |
+          git config user.name "climate-data-bot"
+          git config user.email "climate-data-bot@users.noreply.github.com"
+          git add published-19912020/manifest.json published-19912020/tiles/
+          if ! git diff --cached --quiet; then
+            git commit -m "data: add verified 1991–2020 monthly climate tile"
+            git push
+          fi
