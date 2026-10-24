@@ -5,6 +5,28 @@ from netCDF4 import Dataset
 from .sources import download_once,sha256,LandMask,LAND_URL
 BASE="https://thredds.northwestknowledge.net/thredds/fileServer/TERRACLIMATE_ALL/climatology"
 VARIABLES=("tmin","tmax","ppt","pet")
+# Audited file identities; updating these requires a new reviewed source version.
+EXPECTED_HASHES={'landmask': '9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9', 'pet': '9db4b1dde786731be0f40f359115518099d5f0dcb464a205132a51ca290b694a', 'ppt': 'eae7eaa3f27c17376178af7a51e6cc5918287d99df35dc00e93ef274b174f211', 'tmax': '04e1293284826d5c9814336a52c389d8552523dbe3ccd3aca072e6ca17ac6f58', 'tmin': '93961a5e423c02282bc1aea2761dbdd28bb8ec1ee79ca571f4b8b1db29d42a7a'}
+
+def validate_metadata(ds, var):
+    """Reject changed dimensions, units, packing, or month order before sampling."""
+    v=ds.variables[var]
+    expected_units="deg C" if var in ("tmin","tmax") else "mm"
+    if v.dimensions != ("time","lat","lon") or v.shape != (12,4320,8640):
+        raise ValueError("Unexpected source dimensions")
+    if getattr(v,"units",None) != expected_units:
+        raise ValueError("Unexpected source units")
+    if not np.isclose(getattr(v,"scale_factor",float("nan")),.1):
+        raise ValueError("Unexpected source scale")
+    offset=-73.0 if var in ("tmin","tmax") else 0.0
+    if not np.isclose(getattr(v,"add_offset",float("nan")),offset):
+        raise ValueError("Unexpected source offset")
+    if not np.array_equal(ds.variables["time"][:],np.arange(1,13)):
+        raise ValueError("Unexpected month order")
+    for key,expected in (("lat",90-(np.arange(4320)+.5)/24),("lon",-180+(np.arange(8640)+.5)/24)):
+        if not np.allclose(ds.variables[key][:],expected,rtol=0,atol=1e-8):
+            raise ValueError("Unexpected source coordinates")
+
 class TerraClimateNormals:
     name="terraclimate-19912020-climatology"
     baseline="1991-2020"
@@ -17,6 +39,10 @@ class TerraClimateNormals:
         self.land=LandMask(land)
         self.hashes={var:sha256(path) for var,path in self.paths.items()}
         self.hashes["landmask"]=self.land.hash
+        if self.hashes != EXPECTED_HASHES:
+            raise ValueError("Source file identity changed; retain cache and review a new source version")
+        for var,path in self.paths.items():
+            with Dataset(path) as ds: validate_metadata(ds,var)
     def land_covers(self,lon,lat):
         return self.land.covers(lon,lat)
     def sample(self,cells):

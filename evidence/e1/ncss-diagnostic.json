@@ -1,0 +1,13 @@
+[
+  {
+    "url": "https://thredds.northwestknowledge.net/thredds/ncss/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_tmin.nc/dataset.xml",
+    "status": 200,
+    "bytes_read_capped_100k": 0,
+    "sample": "",
+    "seconds": 5.977461652999978
+  },
+  {
+    "url": "https://thredds.northwestknowledge.net/thredds/ncss/TERRACLIMATE_ALL/climatology/TerraClimate_19912020_tmin.nc?var=tmin&west=-123.5&east=-123.0&south=49.0&north=49.5&accept=netcdf&addLatLon=true&time=all",
+    "error": "HTTP Error 400: Bad Request"
+  }
+]

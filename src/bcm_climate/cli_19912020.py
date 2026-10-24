@@ -15,10 +15,11 @@ def main():
     a=p.parse_args()
     if a.command=="verify":
         print(json.dumps({"verified_tiles":verify(a.output)}));return
-    if a.max_tiles<=0:raise SystemExit("Need positive bounded tile count")
+    if not 1 <= a.max_tiles <= 3:raise SystemExit("Pilot limit is 1 to 3 tiles")
     plan=json.loads(a.plan.read_text())["tiles"]
     mf=a.output/"manifest.json"
     done=json.loads(mf.read_text()).get("tiles",{}) if mf.exists() else {}
+    if mf.exists(): verify(a.output)
     if all(t["id"] in done for t in plan):
         print(json.dumps({"new_tiles":0,"message":"Pilot complete"}));return
     src=TerraClimateNormals(a.cache)
